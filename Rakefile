@@ -8,6 +8,7 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 
 require 'tasks/rails'
+
 namespace :stories do
   def execute(cmd)
     success = system cmd
