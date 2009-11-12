@@ -131,7 +131,7 @@ def should_behave_like_resource(opts = {})
 
   describe "GET index" do
     it "assigns all #{models} as @#{models}" do
-      clazz.stub!(:find).with(:all).and_return([mocked_model])
+      clazz.stub!(:all).and_return([mocked_model])
       get :index, parameters
       assigns[models].should == [mocked_model]
     end if formats_include_html(opts)

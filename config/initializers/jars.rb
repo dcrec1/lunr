@@ -1,1 +1,4 @@
-Dir[RAILS_ROOT + "/lib/*.jar"].each { |path| require path.split('/').last.gsub('.jar', '') }
+begin
+  Dir[RAILS_ROOT + "/lib/*.jar"].each { |path| require path.split('/').last.gsub('.jar', '') }
+rescue Exception
+end
