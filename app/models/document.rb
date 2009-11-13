@@ -1,4 +1,7 @@
 class Document
+
+  attr_reader :attributes
+
   def initialize(attributes = {})
     assign_attributes attributes
   end
@@ -12,8 +15,8 @@ class Document
       document.add Field.new key, value, Field::Store::YES, Field::Index::ANALYZED
       _all << value
     end
-    document.add Field.new ID_FIELD, @id, Field::Store::YES, Field::Index::NOT_ANALYZED
-    document.add Field.new ALL_FIELD, _all.join(' '), Field::Store::YES, Field::Index::ANALYZED
+    document.add Field.new ID_FIELD, @id, Field::Store::NO, Field::Index::NOT_ANALYZED
+    document.add Field.new ALL_FIELD, _all.join(' '), Field::Store::NO, Field::Index::ANALYZED
     index.add_document document
     index.close
   end

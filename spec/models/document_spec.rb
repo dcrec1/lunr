@@ -66,5 +66,11 @@ describe Document do
       Document.create!(:id => "5", :dream => "sky").destroy
       Document.search("sky").should be_empty
     end
+
+    it "should return the attributes" do
+      attributes = {:param1 => "show", :param2 => "update"}
+      Document.create! attributes
+      Document.search("show").first.attributes.should eql(attributes.stringify_keys)
+    end
   end
 end
