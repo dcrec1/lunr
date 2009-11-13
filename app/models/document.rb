@@ -45,6 +45,8 @@ class Document
     end
   end
 
+  private
+
   def method_missing(method_name, *args)
     @attributes[method_name.to_s]
   end
