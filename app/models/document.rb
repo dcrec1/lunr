@@ -11,7 +11,7 @@ class Document
       document.add Field.new key, value, Field::Store::YES, Field::Index::ANALYZED
       _all << value
     end
-    document.add Field.new '_all', _all.string, Field::Store::YES, Field::Index::ANALYZED
+    document.add Field.new ALL_FIELD, _all.string, Field::Store::YES, Field::Index::ANALYZED
     index.add_document document
     index.close
   end
@@ -29,7 +29,7 @@ class Document
   end
 
   def self.search_by_query(query)
-    search_by_attributes :_all => query
+    search_by_attributes ALL_FIELD => query
   end
 
   def self.search_by_attributes(attributes)
@@ -46,6 +46,8 @@ class Document
   end
 
   private
+
+  ALL_FIELD = '_all'
 
   def method_missing(method_name, *args)
     @attributes[method_name.to_s]
