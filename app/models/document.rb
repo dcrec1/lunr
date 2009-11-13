@@ -7,19 +7,21 @@ class Document
     index = Index.open
     document = org.apache.lucene.document.Document.new
     _all = []
+    @id = @attributes.delete('id') || ''
     @attributes.each do |key, value|
-      document.add new_field(key, value)
+      document.add Field.new key, value, Field::Store::YES, Field::Index::ANALYZED
       _all << value
     end
-    document.add new_field ALL_FIELD, _all.join(' ')
+    document.add Field.new ID_FIELD, @id, Field::Store::YES, Field::Index::NOT_ANALYZED
+    document.add Field.new ALL_FIELD, _all.join(' '), Field::Store::YES, Field::Index::ANALYZED
     index.add_document document
     index.close
   end
 
   def destroy
-    #index = Index.open
-    #index.delete_documents self.class.term(ID_FIELD, @attributes[ID_FIELD])
-    #index.close
+    index = Index.open
+    index.delete_documents self.class.term(ID_FIELD, @id)
+    index.close
   end
 
   def update_attributes(attributes)
@@ -60,15 +62,11 @@ class Document
 
   private
 
-  ID_FIELD = 'id'
+  ID_FIELD = '_id'
   ALL_FIELD = '_all'
 
   def assign_attributes(attributes)
     @attributes = attributes.stringify_keys
-  end
-
-  def new_field(name, value)
-    Field.new name, value, Field::Store::YES, Field::Index::ANALYZED
   end
 
   def self.term(name, value)

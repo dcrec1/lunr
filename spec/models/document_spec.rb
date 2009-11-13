@@ -62,7 +62,7 @@ describe Document do
       Document.search("value").size.should == 1
     end
 
-    xit "should be destroyed if has id" do
+    it "should be destroyed if has id" do
       Document.create!(:id => "5", :dream => "sky").destroy
       Document.search("sky").should be_empty
     end
