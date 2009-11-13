@@ -1,6 +1,6 @@
 class Document
   def initialize(attributes = {})
-    @attributes = attributes.stringify_keys
+    assign_attributes attributes
   end
 
   def save
@@ -8,16 +8,27 @@ class Document
     document = org.apache.lucene.document.Document.new
     _all = StringIO.new
     @attributes.each do |key, value|
-      document.add Field.new key, value, Field::Store::YES, Field::Index::ANALYZED
+      document.add new_field(key, value)
       _all << value
     end
-    document.add Field.new ALL_FIELD, _all.string, Field::Store::YES, Field::Index::ANALYZED
+    document.add new_field ALL_FIELD, _all.string
     index.add_document document
+    @attributes[ID_FIELD] = document.id.to_s
     index.close
   end
 
+  def update_attributes(attributes)
+    index = Index.open
+    index.delete_documents self.class.term(ID_FIELD, @attributes[ID_FIELD])
+    index.close
+    assign_attributes(attributes)
+    save
+  end
+
   def self.create!(attributes)
-    new(attributes).save
+    returning new(attributes) do |model|
+      model.save
+    end
   end
 
   def self.search(param)
@@ -34,8 +45,7 @@ class Document
 
   def self.search_by_attributes(attributes)
     searcher = IndexSearcher.new Index.directory, true
-    term = Term.new attributes.keys.first.to_s, attributes.values.first
-    query = TermQuery.new term
+    query = TermQuery.new term(attributes.keys.first.to_s, attributes.values.first)
     searcher.search(query, nil, 10).scoreDocs.map do |score_doc|
       attributes = {}
       searcher.doc(score_doc.doc).get_fields.each do |field|
@@ -47,7 +57,20 @@ class Document
 
   private
 
+  ID_FIELD = 'id'
   ALL_FIELD = '_all'
+
+  def assign_attributes(attributes)
+    @attributes = attributes.stringify_keys
+  end
+
+  def new_field(name, value)
+    Field.new name, value, Field::Store::YES, Field::Index::ANALYZED
+  end
+
+  def self.term(name, value)
+    Term.new name, value.to_s
+  end
 
   def method_missing(method_name, *args)
     @attributes[method_name.to_s]

@@ -1,15 +1,15 @@
 require 'spec_helper'
 
 describe Document do
-  before :each do
-    clean_index
-  end
-
-  it "can be initialized without parameters" do
+  it "should be initialized without parameters" do
     lambda { Document.new }.should_not raise_error
   end
 
   context "in a Lucene index" do
+    before :each do
+      clean_index
+    end
+
     it "should be saved" do
       title = "ruby programming"
       document = Document.new(:title => title).save
@@ -50,6 +50,11 @@ describe Document do
       Document.create! :country => "Turkey"
       Document.create! :animal => "Turkey"
       Document.search("turkey").last.animal.should eql("Turkey")
+    end
+
+    it "should be updated" do
+      Document.create!(:city => "Rome").update_attributes(:city => "London")
+      Document.search("london").size.should == 1
     end
   end
 end
