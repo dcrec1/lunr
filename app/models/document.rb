@@ -6,21 +6,24 @@ class Document
   def save
     index = Index.open
     document = org.apache.lucene.document.Document.new
-    _all = StringIO.new
+    _all = []
     @attributes.each do |key, value|
       document.add new_field(key, value)
       _all << value
     end
-    document.add new_field ALL_FIELD, _all.string
+    document.add new_field ALL_FIELD, _all.join(' ')
     index.add_document document
-    @attributes[ID_FIELD] = document.id.to_s
     index.close
   end
 
+  def destroy
+    #index = Index.open
+    #index.delete_documents self.class.term(ID_FIELD, @attributes[ID_FIELD])
+    #index.close
+  end
+
   def update_attributes(attributes)
-    index = Index.open
-    index.delete_documents self.class.term(ID_FIELD, @attributes[ID_FIELD])
-    index.close
+    destroy
     assign_attributes(attributes)
     save
   end

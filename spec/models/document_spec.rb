@@ -52,9 +52,19 @@ describe Document do
       Document.search("turkey").last.animal.should eql("Turkey")
     end
 
-    it "should be updated" do
-      Document.create!(:city => "Rome").update_attributes(:city => "London")
+    it "should be updated if has an id" do
+      Document.create!(:id => "15", :city => "Rome").update_attributes(:city => "London")
       Document.search("london").size.should == 1
+    end
+
+    it "should be saved with multiple fields" do
+      Document.create! :param1 => "value1", :param2 => "value2"
+      Document.search("value").size.should == 1
+    end
+
+    xit "should be destroyed if has id" do
+      Document.create!(:id => "5", :dream => "sky").destroy
+      Document.search("sky").should be_empty
     end
   end
 end
