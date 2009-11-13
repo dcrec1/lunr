@@ -72,5 +72,11 @@ describe Document do
       Document.create! attributes
       Document.search("show").first.attributes.should eql(attributes.stringify_keys)
     end
+
+    it "should return the id" do
+      query, id = "easy", "16"
+      Document.create! :how => query, :id => id
+      Document.search(query).first.id.should eql(id)
+    end
   end
 end
