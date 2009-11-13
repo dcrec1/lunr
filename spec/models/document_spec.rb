@@ -41,5 +41,11 @@ describe Document do
       Document.create! :country => country
       Document.search("brazil").first.country.should eql(country)
     end
+
+    it "should find multiple documents by a query like 'query'" do
+      Document.create! :country => "Turkey"
+      Document.create! :animal => "Turkey"
+      Document.search("turkey").last.animal.should eql("Turkey")
+    end
   end
 end
