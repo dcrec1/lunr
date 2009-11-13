@@ -35,5 +35,11 @@ describe Document do
       save :place => "Rio Amazonas"
       Document.search(:place => "rio").last.place.should eql("Rio Amazonas")
     end
+
+    it "should find a document by a query like 'query'" do
+      country = "Brazil"
+      Document.create! :country => country
+      Document.search("brazil").first.country.should eql(country)
+    end
   end
 end

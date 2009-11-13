@@ -6,9 +6,12 @@ class Document
   def save
     index = Index.open
     document = org.apache.lucene.document.Document.new
+    _all = StringIO.new
     @attributes.each do |key, value|
       document.add Field.new key, value, Field::Store::YES, Field::Index::ANALYZED
+      _all << value
     end
+    document.add Field.new '_all', _all.string, Field::Store::YES, Field::Index::ANALYZED
     index.add_document document
     index.close
   end
@@ -17,7 +20,19 @@ class Document
     new(attributes).save
   end
 
-  def self.search(attributes)
+  def self.search(param)
+    if param.instance_of?(Hash)
+      search_by_attributes param
+    else
+      search_by_query param
+    end
+  end
+
+  def self.search_by_query(query)
+    search_by_attributes :_all => query
+  end
+
+  def self.search_by_attributes(attributes)
     searcher = IndexSearcher.new Index.directory, true
     term = Term.new attributes.keys.first.to_s, attributes.values.first
     query = TermQuery.new term
