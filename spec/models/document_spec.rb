@@ -14,7 +14,7 @@ describe Document do
 
     it "should be found by :attribute => 'value'" do
       name = "search lucene"
-      save(:name => name)
+      save :name => name
       Document.search(:name => "lucene").first.name.should eql(name)
     end
 
@@ -24,10 +24,16 @@ describe Document do
       search(:description => "story").first.get_field("description").string_value.should eql(description)
     end
 
-    it "should find multiple documents by :attribute => 'value'" do
+    it "should save multiple documents in an index" do
       Document.create! :name => "Kate Moss"
       Document.create! :name => "Kate Perry"
       search(:name => "kate").size.should == 2
+    end
+
+    it "should find multiple documents" do
+      save :place => "Rio de Janeiro"
+      save :place => "Rio Amazonas"
+      Document.search(:place => "rio").last.place.should eql("Rio Amazonas")
     end
   end
 end
