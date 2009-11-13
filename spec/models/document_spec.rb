@@ -5,6 +5,10 @@ describe Document do
     clean_index
   end
 
+  it "can be initialized without parameters" do
+    lambda { Document.new }.should_not raise_error
+  end
+
   context "in a Lucene index" do
     it "should be saved" do
       title = "ruby programming"

@@ -1,5 +1,5 @@
 class Document
-  def initialize(attributes)
+  def initialize(attributes = {})
     @attributes = attributes.stringify_keys
   end
 
