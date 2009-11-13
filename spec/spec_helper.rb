@@ -2,6 +2,7 @@
 # from the project root directory.
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path(File.join(File.dirname(__FILE__),'..','config','environment'))
+
 require 'spec/autorun'
 require 'spec/rails'
 
@@ -17,8 +18,12 @@ end
 
 require File.expand_path(File.dirname(__FILE__) + '/resource_helper')
 
+def clean_index
+  system "rm -Rf #{Index::PATH}"
+end
+
 def directory
-  file = java.io.File.new Document::PATH
+  file = java.io.File.new Index::PATH
   org.apache.lucene.store.FSDirectory.open file
 end
 

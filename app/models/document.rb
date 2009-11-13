@@ -1,20 +1,16 @@
 class Document
-
-  PATH = RAILS_ROOT + "/db/lucene/#{RAILS_ENV}"
-
   def initialize(attributes)
     @attributes = attributes.stringify_keys
   end
 
   def save
-    analizer = SimpleAnalyzer.new
-    writer = IndexWriter.new directory, analizer, true, IndexWriter::MaxFieldLength::UNLIMITED
+    index = Index.open
     document = org.apache.lucene.document.Document.new
     @attributes.each do |key, value|
       document.add Field.new key, value, Field::Store::YES, Field::Index::ANALYZED
     end
-    writer.add_document document
-    writer.close
+    index.add_document document
+    index.close
   end
 
   def self.create!(attributes)
@@ -22,7 +18,7 @@ class Document
   end
 
   def self.search(attributes)
-    searcher = IndexSearcher.new directory, true
+    searcher = IndexSearcher.new Index.directory, true
     term = Term.new attributes.keys.first.to_s, attributes.values.first
     query = TermQuery.new term
     searcher.search(query, nil, 10).scoreDocs.map do |score_doc|
@@ -36,11 +32,5 @@ class Document
 
   def method_missing(method_name, *args)
     @attributes[method_name.to_s]
-  end
-
-  private
-
-  def directory
-    FSDirectory.open java.io.File.new(PATH)
   end
 end

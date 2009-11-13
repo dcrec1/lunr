@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe Document do
+  before :each do
+    clean_index
+  end
+
   context "in a Lucene index" do
     it "should be saved" do
       title = "ruby programming"
@@ -18,6 +22,12 @@ describe Document do
       description = "this is a little story"
       document = Document.create! :description => description
       search(:description => "story").first.get_field("description").string_value.should eql(description)
+    end
+
+    it "should find multiple documents by :attribute => 'value'" do
+      Document.create! :name => "Kate Moss"
+      Document.create! :name => "Kate Perry"
+      search(:name => "kate").size.should == 2
     end
   end
 end

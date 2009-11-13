@@ -7,7 +7,6 @@ begin
   import org.apache.lucene.analysis.SimpleAnalyzer
   import org.apache.lucene.index.Term
   import org.apache.lucene.search.TermQuery
-  system "mkdir -p #{Document::PATH}"
 rescue Exception => e
   puts e
 end
