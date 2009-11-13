@@ -13,43 +13,41 @@ require 'spec/rails'
 Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
 
 Spec::Runner.configure do |config|
-  # If you're not using ActiveRecord you should remove these
-  # lines, delete config/database.yml and disable :active_record
-  # in your config/boot.rb
-  config.use_transactional_fixtures = true
-  config.use_instantiated_fixtures  = false
-  config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
-
-  # == Fixtures
-  #
-  # You can declare fixtures for each example_group like this:
-  #   describe "...." do
-  #     fixtures :table_a, :table_b
-  #
-  # Alternatively, if you prefer to declare them only once, you can
-  # do so right here. Just uncomment the next line and replace the fixture
-  # names with your fixtures.
-  #
-  # config.global_fixtures = :table_a, :table_b
-  #
-  # If you declare global fixtures, be aware that they will be declared
-  # for all of your examples, even those that don't use them.
-  #
-  # You can also declare which fixtures to use (for example fixtures for test/fixtures):
-  #
-  # config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
-  #
-  # == Mock Framework
-  #
-  # RSpec uses it's own mocking framework by default. If you prefer to
-  # use mocha, flexmock or RR, uncomment the appropriate line:
-  #
-  # config.mock_with :mocha
-  # config.mock_with :flexmock
-  # config.mock_with :rr
-  #
-  # == Notes
-  #
-  # For more information take a look at Spec::Runner::Configuration and Spec::Runner
 end
+
 require File.expand_path(File.dirname(__FILE__) + '/resource_helper')
+
+def directory
+  file = java.io.File.new Document::PATH
+  org.apache.lucene.store.FSDirectory.open file
+end
+
+def get_writer
+  analizer = org.apache.lucene.analysis.SimpleAnalyzer.new
+  writer = org.apache.lucene.index.IndexWriter
+  writer.new directory, analizer, true, writer::MaxFieldLength::UNLIMITED
+end
+
+def get_field(name, value)
+  field = org.apache.lucene.document.Field
+  field.new name, value, field::Store::YES, field::Index::ANALYZED
+end
+
+def search(params)
+  searcher = org.apache.lucene.search.IndexSearcher.new directory, true
+  term = org.apache.lucene.index.Term.new params.keys.first.to_s, params.values.first
+  query = org.apache.lucene.search.TermQuery.new(term)
+  searcher.search(query, nil, 10).scoreDocs.map do |score_doc|
+    searcher.doc score_doc.doc
+  end
+end
+
+def save(attributes)
+  writer = get_writer
+  document = org.apache.lucene.document.Document.new
+  attributes.stringify_keys.each do |key, value|
+    document.add get_field(key, value)
+  end
+  writer.add_document document
+  writer.close
+end
