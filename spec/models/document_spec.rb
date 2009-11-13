@@ -78,5 +78,10 @@ describe Document do
       Document.create! :how => query, :id => id
       Document.search(query).first.id.should eql(id)
     end
+
+    it "should update attributes without loosing the old ones" do
+      Document.create!(:name => "Diego", :lastname => "Carrion").update_attributes :lastname => "Carrion"
+      Document.search("diego").should_not be_empty
+    end
   end
 end

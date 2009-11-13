@@ -27,9 +27,9 @@ class Document
     index.close
   end
 
-  def update_attributes(attributes)
+  def update_attributes(new_attributes)
     destroy
-    self.class.create!(attributes)
+    self.class.create!(attributes.merge new_attributes)
   end
 
   def self.create!(attributes)
