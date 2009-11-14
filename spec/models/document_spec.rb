@@ -59,7 +59,7 @@ describe Document do
 
     it "should be saved with multiple fields" do
       Document.create! :param1 => "value1", :param2 => "value2"
-      Document.search("value").size.should == 1
+      Document.search("value2").size.should == 1
     end
 
     it "should be destroyed if has id" do
@@ -82,6 +82,11 @@ describe Document do
     it "should update attributes without loosing the old ones" do
       Document.create!(:name => "Diego", :lastname => "Carrion").update_attributes :lastname => "Carrion"
       Document.search("diego").should_not be_empty
+    end
+
+    it "should find documents ignoring the case" do
+      Document.create! :name => "diego"
+      Document.search("DIEGO").should_not be_empty
     end
   end
 end

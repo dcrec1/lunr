@@ -3,7 +3,7 @@ class Writer < IndexWriter
 
   def initialize
     overwrite = Dir[PATH + '/*'].size < 1
-    super directory, SimpleAnalyzer.new, overwrite, IndexWriter::MaxFieldLength::UNLIMITED
+    super directory, StandardAnalyzer.new, overwrite, IndexWriter::MaxFieldLength::UNLIMITED
     yield self
     close
   end

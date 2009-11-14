@@ -48,7 +48,7 @@ class Document
 
   def self.search_by_attributes(attributes)
     searcher = Searcher.new
-    query = TermQuery.new Term.new(attributes.keys.first.to_s, attributes.values.first)
+    query = TermQuery.new Term.new(attributes.keys.first.to_s, attributes.values.first.downcase)
     searcher.search(query, nil, 10).scoreDocs.map do |score_doc|
       attributes = {}
       searcher.doc(score_doc.doc).get_fields.each do |field|
