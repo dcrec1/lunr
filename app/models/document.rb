@@ -23,7 +23,7 @@ class Document
 
   def destroy
     Writer.new do |index|
-      index.delete_documents Term.new(ID_FIELD, @id)
+      index.delete_documents term.new(ID_FIELD, @id)
     end
   end
 
@@ -48,7 +48,7 @@ class Document
 
   def self.search_by_attributes(attributes)
     searcher = Searcher.new
-    query = TermQuery.new Term.new(attributes.keys.first.to_s, attributes.values.first.downcase)
+    query = TermQuery.new term.new(attributes.keys.first.to_s, attributes.values.first.downcase)
     searcher.search(query, nil, 10).scoreDocs.map do |score_doc|
       attributes = {}
       searcher.doc(score_doc.doc).get_fields.each do |field|
@@ -62,6 +62,10 @@ class Document
 
   ID_FIELD = 'id'
   ALL_FIELD = '_all'
+
+  def term
+    org.apache.lucene.index.Term
+  end
 
   def method_missing(method_name, *args)
     @attributes[method_name.to_s]
