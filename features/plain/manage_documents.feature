@@ -18,7 +18,7 @@ Feature: Manage documents
     | 4  | The Ruby way     |
     | 8  | Ruby refactoring |
     | 16 | The Rails way    |
-    When I go to /documents/search/ruby.json
+    When I go to /documents/search.json?q=ruby
     Then I should get a JSON object for this advertises:
     | id |       title      |
     | 2  | Ruby programming |
