@@ -8,23 +8,23 @@ class Document
   end
 
   def save
-    index = Writer.new
-    document = org.apache.lucene.document.Document.new
-    _all = []
-    @attributes.each do |key, value|
-      document.add Field.new key, value, Field::Store::YES, Field::Index::ANALYZED
-      _all << value
+    Writer.new do |index|
+      document = org.apache.lucene.document.Document.new
+      _all = []
+      @attributes.each do |key, value|
+        document.add Field.new key, value, Field::Store::YES, Field::Index::ANALYZED
+        _all << value
+      end
+      document.add Field.new ID_FIELD, @id, Field::Store::YES, Field::Index::NOT_ANALYZED
+      document.add Field.new ALL_FIELD, _all.join(' '), Field::Store::NO, Field::Index::ANALYZED
+      index.add_document document
     end
-    document.add Field.new ID_FIELD, @id, Field::Store::YES, Field::Index::NOT_ANALYZED
-    document.add Field.new ALL_FIELD, _all.join(' '), Field::Store::NO, Field::Index::ANALYZED
-    index.add_document document
-    index.close
   end
 
   def destroy
-    index = Writer.new
-    index.delete_documents Term.new(ID_FIELD, @id)
-    index.close
+    Writer.new do |index|
+      index.delete_documents Term.new(ID_FIELD, @id)
+    end
   end
 
   def update_attributes(new_attributes)
