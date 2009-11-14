@@ -8,7 +8,7 @@ class Document
   end
 
   def save
-    index = Index.open
+    index = Writer.new
     document = org.apache.lucene.document.Document.new
     _all = []
     @attributes.each do |key, value|
@@ -22,7 +22,7 @@ class Document
   end
 
   def destroy
-    index = Index.open
+    index = Writer.new
     index.delete_documents Term.new(ID_FIELD, @id)
     index.close
   end
@@ -47,7 +47,7 @@ class Document
   end
 
   def self.search_by_attributes(attributes)
-    searcher = IndexSearcher.new Index.directory, true
+    searcher = Searcher.new
     query = TermQuery.new Term.new(attributes.keys.first.to_s, attributes.values.first)
     searcher.search(query, nil, 10).scoreDocs.map do |score_doc|
       attributes = {}
