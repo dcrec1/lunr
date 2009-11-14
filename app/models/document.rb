@@ -38,6 +38,10 @@ class Document
     end
   end
 
+  def self.find(id)
+    search(:id => id).first
+  end
+
   def self.search(param)
     if param.instance_of?(Hash)
       search_by_attributes param
