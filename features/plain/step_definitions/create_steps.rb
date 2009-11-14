@@ -1,3 +1,3 @@
 Given /^I have no documents$/ do
-  puts "FWEFWEFWE"
+  system "rm -Rf #{Index::PATH}"
 end

@@ -16,7 +16,7 @@ describe Document do
       search(:title => "programming").first.get_field("title").string_value.should eql(title)
     end
 
-    it "should be found by :attribute => 'value'" do
+    it "should search by :attribute => 'value'" do
       name = "search lucene"
       save :name => name
       Document.search(:name => "lucene").first.name.should eql(name)
@@ -34,19 +34,19 @@ describe Document do
       search(:name => "kate").size.should == 2
     end
 
-    it "should find multiple documents" do
+    it "should search multiple documents" do
       save :place => "Rio de Janeiro"
       save :place => "Rio Amazonas"
       Document.search(:place => "rio").last.place.should eql("Rio Amazonas")
     end
 
-    it "should find a document by a query like 'query'" do
+    it "should search a document by a query like 'query'" do
       country = "Brazil"
       Document.create! :country => country
       Document.search("brazil").first.country.should eql(country)
     end
 
-    it "should find multiple documents by a query like 'query'" do
+    it "should search multiple documents by a query like 'query'" do
       Document.create! :country => "Turkey"
       Document.create! :animal => "Turkey"
       Document.search("turkey").last.animal.should eql("Turkey")
@@ -84,9 +84,14 @@ describe Document do
       Document.search("diego").should_not be_empty
     end
 
-    it "should find documents ignoring the case" do
+    it "should search documents ignoring the case" do
       Document.create! :name => "diego"
       Document.search("DIEGO").should_not be_empty
+    end
+
+    it "should find by id" do
+      Document.create! :id => "50", :language => "ruby"
+      Document.find("50").language.should eql("ruby")
     end
   end
 end
