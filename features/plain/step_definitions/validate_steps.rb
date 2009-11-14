@@ -6,3 +6,7 @@ end
 Then /^the '(.*)' of the document should equal to '(.*)'$/ do |attribute, value|
   @document.send(attribute).should eql(value)
 end
+
+Then /^I should get a JSON object with '(.*)' equal to '(.*)'$/ do |attribute, value|
+  puts response.body
+end

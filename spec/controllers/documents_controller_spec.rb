@@ -1,5 +1,5 @@
 require 'spec_helper'
 
 describe DocumentsController do
-  should_behave_like_resource
+  should_behave_like_resource :formats => [:json, :xml]
 end
