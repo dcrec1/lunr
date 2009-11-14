@@ -9,10 +9,6 @@ require File.join(File.dirname(__FILE__), 'boot')
 Rails::Initializer.run do |config|
   config.gem 'less'
   config.gem 'haml'
-  config.gem 'mleung-koujou', :lib => 'koujou', :source => 'http://gems.github.com'
-  config.gem 'remarkable_rails', :lib => false
-  config.gem 'rspec-rails', :lib => false
-  config.gem 'rspec', :lib => false
   config.gem 'crack'
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
