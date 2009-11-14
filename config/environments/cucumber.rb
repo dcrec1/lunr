@@ -18,4 +18,4 @@ config.action_mailer.delivery_method = :test
 config.gem 'cucumber',    :lib => false,        :version => '>=0.3.96'
 config.gem 'webrat',      :lib => false,        :version => '>=0.5.0'
 config.gem 'rspec',       :lib => false,        :version => '>=1.2.6'
-config.gem 'rspec-rails', :lib => 'spec/rails', :version => '>=1.2.6'
+config.gem 'rspec-rails', :lib => false#'spec/rails', :version => '>=1.2.6'

@@ -8,5 +8,5 @@ Then /^the '(.*)' of the document should equal to '(.*)'$/ do |attribute, value|
 end
 
 Then /^I should get a JSON object with '(.*)' equal to '(.*)'$/ do |attribute, value|
-  #Crack::JSON.parse(response.body)[attribute].should eql(value)
+  Crack::JSON.parse(response.body)[attribute].should eql(value)
 end
