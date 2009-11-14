@@ -93,5 +93,11 @@ describe Document do
       Document.create! :id => "50", :language => "ruby"
       Document.find("50").language.should eql("ruby")
     end
+
+    it "should be saved always with an id" do
+      framework = "rails"
+      id = Document.create!(:framework => framework).id
+      Document.find(id).framework.should eql(framework)
+    end
   end
 end

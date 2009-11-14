@@ -4,7 +4,7 @@ class Document
 
   def initialize(attributes = {})
     @attributes = attributes.stringify_keys
-    @id = @attributes.delete('id') || ''
+    @id = @attributes.delete('id') || object_id.to_s
   end
 
   def save
