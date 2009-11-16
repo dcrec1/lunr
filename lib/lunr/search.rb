@@ -15,7 +15,7 @@ module Lunr
     end
     
     def self.by_query(query)
-      self.by_attributes '_all' => query
+      self.by_attributes ALL => query
     end
 
     def initialize
