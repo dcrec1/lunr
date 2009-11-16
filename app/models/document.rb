@@ -1,2 +1,2 @@
-class Document < Lunr::Base
+class Document < Lunr::Document
 end

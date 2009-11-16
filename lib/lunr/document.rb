@@ -1,5 +1,5 @@
 module Lunr
-  class Base
+  class Document
     attr_reader :attributes, :id
 
     def initialize(attributes = {})
@@ -48,21 +48,9 @@ module Lunr
 
     def self.search(param)
       if param.instance_of?(Hash)
-        search_by_attributes param
+        Search.by_attributes param
       else
-        search_by_attributes ALL_FIELD => param
-      end
-    end
-
-    def self.search_by_attributes(attributes)
-      searcher = Searcher.new
-      query = TermQuery.new Lunr::Term.for(attributes.keys.first, attributes.values.first)
-      searcher.search(query, nil, 10).scoreDocs.map do |score_doc|
-        attributes = {}
-        searcher.doc(score_doc.doc).get_fields.each do |field|
-          attributes.store field.name, field.string_value
-        end
-        Document.new attributes
+        Search.by_attributes ALL_FIELD => param
       end
     end
 

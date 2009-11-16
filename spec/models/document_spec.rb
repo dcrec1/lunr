@@ -99,5 +99,10 @@ describe Document do
       id = Document.create!(:framework => framework).id
       Document.find(id).framework.should eql(framework)
     end
+    
+    it "should find with wildcards" do
+      Document.create! :food => "Pizza"
+      Document.search("pi*a").should_not be_empty
+    end
   end
 end
