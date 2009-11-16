@@ -18,12 +18,16 @@ end
 
 require File.expand_path(File.dirname(__FILE__) + '/resource_helper')
 
+def index_path
+  Lunr::Index::PATH
+end
+
 def clean_index
-  system "rm -Rf #{Index::PATH}"
+  system "rm -Rf #{index_path}"
 end
 
 def directory
-  file = java.io.File.new Index::PATH
+  file = java.io.File.new index_path
   org.apache.lucene.store.FSDirectory.open file
 end
 
