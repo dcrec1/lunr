@@ -19,15 +19,15 @@ module Lunr
           document.add Field.new key, value, Field::Store::YES, Field::Index::ANALYZED
           _all << value
         end
-        document.add Field.new ID_FIELD, @id, Field::Store::YES, Field::Index::NOT_ANALYZED
-        document.add Field.new ALL_FIELD, _all.join(' '), Field::Store::NO, Field::Index::ANALYZED
+        document.add Field.new ID, @id, Field::Store::YES, Field::Index::NOT_ANALYZED
+        document.add Field.new ALL, _all.join(' '), Field::Store::NO, Field::Index::ANALYZED
         index.add_document document
       end
     end
 
     def destroy
       Writer.new do |index|
-        index.delete_documents Lunr::Term.for(ID_FIELD, @id)
+        index.delete_documents Lunr::Term.for(ID, @id)
       end
     end
 
@@ -50,14 +50,11 @@ module Lunr
       if param.instance_of?(Hash)
         Search.by_attributes param
       else
-        Search.by_attributes ALL_FIELD => param
+        Search.by_query param
       end
     end
 
     private
-
-    ID_FIELD = 'id'
-    ALL_FIELD = '_all'
 
     def method_missing(method_name, *args)
       @attributes[method_name.to_s]

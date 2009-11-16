@@ -104,5 +104,10 @@ describe Document do
       Document.create! :food => "Pizza"
       Document.search("pi*a").should_not be_empty
     end
+    
+    it "should find with OR operator" do
+      Document.create! :title => "blue red"
+      Document.search("black OR red").should_not be_empty
+    end
   end
 end

@@ -13,6 +13,10 @@ module Lunr
         Document.new attributes
       end
     end
+    
+    def self.by_query(query)
+      self.by_attributes '_all' => query
+    end
 
     def initialize
       super directory, true
