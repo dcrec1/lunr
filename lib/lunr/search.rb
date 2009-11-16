@@ -4,7 +4,7 @@ module Lunr
     
     def self.by_attributes(attributes)
       searcher = self.new
-      query = TermQuery.new Lunr::Term.for(attributes.keys.first, attributes.values.first)
+      query = WildcardQuery.new Lunr::Term.for(attributes.keys.first, attributes.values.first)
       searcher.search(query, nil, 10).scoreDocs.map do |score_doc|
         attributes = {}
         searcher.doc(score_doc.doc).get_fields.each do |field|
