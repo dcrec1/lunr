@@ -43,15 +43,20 @@ module Lunr
     end
 
     def self.find(param)
-      return Search.all if param.eql? :all
-      search(:id => param).first
+      if param.instance_of? Symbol
+        Search.all.map { |attributes| self.new attributes }
+      else
+        search(:id => param).first
+      end
     end
 
     def self.search(param)
-      if param.instance_of?(Hash)
+      if param.instance_of? Hash 
         Search.by_attributes param
       else
         Search.by_query param
+      end.map do |attributes|
+        self.new attributes
       end
     end
 

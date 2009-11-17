@@ -1,5 +1,8 @@
 require 'spec_helper'
 
+class Advertise < Lunr::Document
+end
+
 describe Document do
   it "should be initialized without parameters" do
     lambda { Document.new }.should_not raise_error
@@ -119,6 +122,12 @@ describe Document do
     it "should return all documents" do
       5.times { Document.create! :year => "2009" }
       Document.find(:all).size.should == 5
+    end
+    
+    it "should return an array of inherited model when searching for documents" do
+      Advertise.create! :login => "dcrec1"
+      puts Advertise.find(:all).first.class
+      Advertise.find(:all).first.should be_a(Advertise)
     end
   end
 end

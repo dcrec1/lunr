@@ -31,7 +31,7 @@ module Lunr
         searcher.doc(score_doc.doc).get_fields.each do |field|
           attributes.store field.name, field.string_value
         end
-        Document.new attributes
+        attributes
       end
     end
   end
