@@ -118,7 +118,7 @@ describe Document do
     
     it "should return all documents" do
       5.times { Document.create! :year => "2009" }
-      Document.all.size.should == 5
+      Document.find(:all).size.should == 5
     end
   end
 end

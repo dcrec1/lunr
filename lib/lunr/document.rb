@@ -35,10 +35,6 @@ module Lunr
       destroy
       self.class.create!(attributes.merge new_attributes)
     end
-    
-    def self.all
-      Search.all
-    end
 
     def self.create!(attributes)
       returning new(attributes) do |model|
@@ -46,8 +42,9 @@ module Lunr
       end
     end
 
-    def self.find(id)
-      search(:id => id).first
+    def self.find(param)
+      return Search.all if param.eql? :all
+      search(:id => param).first
     end
 
     def self.search(param)
