@@ -16,3 +16,9 @@ Then /^I should get a JSON object for this documents:$/ do |table|
     attributes.should eql(table.hashes[i])
   end
 end
+
+Then /^I should see this documents:$/ do |table|
+  table.rows.each do |row|
+    response.body.should contain(row.first)
+  end
+end

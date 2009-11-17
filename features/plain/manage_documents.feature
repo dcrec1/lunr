@@ -34,8 +34,7 @@ Feature: Manage documents
     | 32 | The JRails way    |
     When I go to the homepage
     Then I should see this documents:
-    | id |       title       |
-    | 4  | JRuby programming |
-    | 8  | The JRuby way     |
-    | 16 | JRuby refactoring |
-    | 32 | The JRails way    |
+    | 4  |
+    | 8  |
+    | 16 |
+    | 32 |
