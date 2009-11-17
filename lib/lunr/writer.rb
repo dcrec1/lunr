@@ -4,7 +4,7 @@ module Lunr
 
     def initialize
       overwrite = Dir[PATH + '/*'].size < 1
-      super directory, StandardAnalyzer.new, overwrite, IndexWriter::MaxFieldLength::UNLIMITED
+      super directory, Analyzer.new, overwrite, IndexWriter::MaxFieldLength::UNLIMITED
       yield self
       close
     end

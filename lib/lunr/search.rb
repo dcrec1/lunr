@@ -8,10 +8,7 @@ module Lunr
     end
     
     def self.by_query(query_string)
-      #self.by_attributes ALL => query
-      parser = StandardQueryParser.new StandardAnalyzer.new
-      query = parser.parse query_string, '_all'
-      search query
+      search StandardQueryParser.new(Analyzer.new).parse(query_string, ALL)
     end
 
     def initialize
