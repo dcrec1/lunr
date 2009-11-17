@@ -7,10 +7,10 @@ module Lunr
       search query
     end
     
-    def self.by_query(query)
+    def self.by_query(query_string)
       #self.by_attributes ALL => query
-      parser = StandardQueryParser.new
-      query = parser.parse query, 'defaultField'
+      parser = StandardQueryParser.new StandardAnalyzer.new
+      query = parser.parse query_string, '_all'
       search query
     end
 
