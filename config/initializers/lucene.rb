@@ -5,6 +5,7 @@ begin
   import org.apache.lucene.search.IndexSearcher
   import org.apache.lucene.index.IndexWriter
   import org.apache.lucene.analysis.standard.StandardAnalyzer
+  import org.apache.lucene.queryParser.standard.StandardQueryParser
   import org.apache.lucene.search.WildcardQuery
 rescue Exception => e
   puts e

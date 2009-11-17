@@ -105,7 +105,7 @@ describe Document do
       Document.search("pi*a").should_not be_empty
     end
     
-    xit "should find with OR operator" do
+    it "should find with OR operator" do
       Document.create! :title => "blue red"
       Document.search("black OR red").should_not be_empty
     end

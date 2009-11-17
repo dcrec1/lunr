@@ -16,11 +16,11 @@ namespace :stories do
     raise unless success
   end
 
-  task :default => [:'db:test:prepare'] do
+  task :default do
     execute "cucumber RAILS_ENV=cucumber"
   end
 
-  task :enhanced => [:'db:test:prepare', :'culerity:rails:start'] do
+  task :enhanced => [:'culerity:rails:start'] do
     execute "cucumber -p enhanced RAILS_ENV=culerity_continuousintegration" do
       execute "rake culerity:rails:stop"
     end
