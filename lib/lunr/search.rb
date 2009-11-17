@@ -3,7 +3,10 @@ module Lunr
     include Index
     
     def self.by_attributes(attributes)
-      query = WildcardQuery.new Lunr::Term.for(attributes.keys.first, attributes.values.first)
+      query = BooleanQuery.new
+      attributes.each do |key, value| 
+        query.add WildcardQuery.new(Lunr::Term.for(key, value)), BooleanClause::Occur::MUST
+      end
       search query
     end
     

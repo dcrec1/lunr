@@ -109,5 +109,11 @@ describe Document do
       Document.create! :title => "blue red"
       Document.search("black OR red").should_not be_empty
     end
+    
+    it "should find given more than an attribute" do
+      Document.create! :name => "John", :lastname => "Paul"
+      Document.create! :name => "John", :lastname => "Lennon"
+      Document.search(:name => "John", :lastname => "Lennon").size.should == 1
+    end
   end
 end

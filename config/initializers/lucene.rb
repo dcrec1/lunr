@@ -4,6 +4,8 @@ begin
   import org.apache.lucene.store.FSDirectory
   import org.apache.lucene.search.IndexSearcher
   import org.apache.lucene.index.IndexWriter
+  import org.apache.lucene.search.BooleanClause
+  import org.apache.lucene.search.BooleanQuery
   import org.apache.lucene.analysis.standard.StandardAnalyzer
   import org.apache.lucene.queryParser.standard.StandardQueryParser
   import org.apache.lucene.search.WildcardQuery
