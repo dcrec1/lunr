@@ -11,7 +11,7 @@ Then /^I should get a JSON object with '(.*)' equal to '(.*)'$/ do |attribute, v
   ActiveSupport::JSON.decode(response.body)[attribute].should eql(value)
 end
 
-Then /^I should get a JSON object for this advertises:$/ do |table|
+Then /^I should get a JSON object for this documents:$/ do |table|
   ActiveSupport::JSON.decode(response.body).each_with_index do |attributes, i|
     attributes.should eql(table.hashes[i])
   end

@@ -2,6 +2,10 @@ module Lunr
   class Search < IndexSearcher
     include Index
     
+    def self.all
+      search MatchAllDocsQuery.new
+    end
+    
     def self.by_attributes(attributes)
       query = BooleanQuery.new
       attributes.each do |key, value| 

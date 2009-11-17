@@ -35,6 +35,10 @@ module Lunr
       destroy
       self.class.create!(attributes.merge new_attributes)
     end
+    
+    def self.all
+      Search.all
+    end
 
     def self.create!(attributes)
       returning new(attributes) do |model|

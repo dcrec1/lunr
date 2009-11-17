@@ -115,5 +115,10 @@ describe Document do
       Document.create! :name => "John", :lastname => "Lennon"
       Document.search(:name => "John", :lastname => "Lennon").size.should == 1
     end
+    
+    it "should return all documents" do
+      5.times { Document.create! :year => "2009" }
+      Document.all.size.should == 5
+    end
   end
 end
