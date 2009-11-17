@@ -1,5 +1,5 @@
 Given /^I have no documents$/ do
-  system "rm -Rf #{Index::PATH}"
+  system "rm -Rf #{Lunr::Index::PATH}"
 end
 
 Given /^a document exists with '(.*)' equal to '(.*)'$/ do |attribute, value|
