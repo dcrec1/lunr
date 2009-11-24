@@ -2,17 +2,22 @@ module Lunr
   class Searcher < IndexSearcher
     include Index
 
+    attr_reader :attributes, :total_pages
+
     def initialize
       super directory, true
     end
 
     def self.search(param)
-      new.search param
+      returning new do |searcher|
+        searcher.search param
+      end
     end
 
     def search(param)
       query = Query.for(param)
-      super(query, nil, 10).scoreDocs.map do |score_doc|
+      top_docs = super(query, nil, Document::PER_PAGE)
+      @attributes = top_docs.scoreDocs.map do |score_doc|
         attributes = {}
         doc(score_doc.doc).fields.each do |field|
           attributes.store field.name, field.string_value
@@ -21,6 +26,7 @@ module Lunr
         end
         attributes
       end
+      @total_pages = (top_docs.totalHits / Document::PER_PAGE.to_f).ceil
     end
 
   end

@@ -1,5 +1,7 @@
 module Lunr
   class Document
+    PER_PAGE = 20
+
     attr_reader :attributes, :id, :highlight
 
     def initialize(attributes = {})
@@ -48,9 +50,14 @@ module Lunr
     end
 
     def self.search(param)
-      Searcher.search(param).map do |attributes|
-        new attributes
-      end
+      search = Searcher.search(param)
+      results = search.attributes.map { |attributes| new attributes }
+      results.instance_eval "def total_pages; #{search.total_pages}; end;"
+      results
+    end
+
+    def self.columns
+      []
     end
 
     private

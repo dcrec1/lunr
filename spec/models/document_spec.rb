@@ -130,8 +130,13 @@ describe Document do
     end
 
     it "should highlight a term" do
-      Advertise.create! :description => "the lazy fox over the whatever"
-      Advertise.search("fox").first.highlight.should eql("the lazy <B>fox</B> over the whatever")
+      Document.create! :description => "the lazy fox over the whatever"
+      Document.search("fox").first.highlight.should eql("the lazy <B>fox</B> over the whatever")
+    end
+
+    it "should return the total of pages of a search" do
+      (Document::PER_PAGE + 1).times { Advertise.create! :label => "pagination" }
+      Document.search("pagination").total_pages.should == 2
     end
   end
 end
