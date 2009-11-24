@@ -35,6 +35,10 @@ module Lunr
       self.class.create!(attributes.merge new_attributes)
     end
 
+    def to_param
+      @id
+    end
+
     def self.create!(attributes)
       returning new(attributes) do |model|
         model.save

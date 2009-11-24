@@ -138,5 +138,9 @@ describe Document do
       (Document::PER_PAGE + 1).times { Advertise.create! :label => "pagination" }
       Document.search("pagination").total_pages.should == 2
     end
+
+    it "should be converted to a param" do
+      Document.new(:id => "10").to_param.should eql("10")
+    end
   end
 end
