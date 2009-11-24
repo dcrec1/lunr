@@ -102,32 +102,36 @@ describe Document do
       id = Document.create!(:framework => framework).id
       Document.find(id).framework.should eql(framework)
     end
-    
+
     it "should find with wildcards" do
       Document.create! :food => "Pizza"
       Document.search("pi*a").should_not be_empty
     end
-    
+
     it "should find with OR operator" do
       Document.create! :title => "blue red"
       Document.search("black OR red").should_not be_empty
     end
-    
+
     it "should find given more than an attribute" do
       Document.create! :name => "John", :lastname => "Paul"
       Document.create! :name => "John", :lastname => "Lennon"
       Document.search(:name => "John", :lastname => "Lennon").size.should == 1
     end
-    
+
     it "should return all documents" do
       5.times { Document.create! :year => "2009" }
       Document.find(:all).size.should == 5
     end
-    
+
     it "should return an array of inherited model when searching for documents" do
       Advertise.create! :login => "dcrec1"
-      puts Advertise.find(:all).first.class
       Advertise.find(:all).first.should be_a(Advertise)
+    end
+
+    it "should highlight a term" do
+      Advertise.create! :description => "the lazy fox over the whatever"
+      Advertise.search("fox").first.highlight.should eql("the lazy <B>fox</B> over the whatever")
     end
   end
 end

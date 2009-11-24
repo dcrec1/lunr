@@ -1,9 +1,10 @@
 module Lunr
   class Document
-    attr_reader :attributes, :id
+    attr_reader :attributes, :id, :highlight
 
     def initialize(attributes = {})
       @attributes = attributes.stringify_keys
+      @highlight = @attributes.delete('highlight')
       @id = @attributes.delete('id') || object_id.to_s
     end
 
@@ -44,19 +45,15 @@ module Lunr
 
     def self.find(param)
       if param.instance_of? Symbol
-        Search.all.map { |attributes| self.new attributes }
+        search :all
       else
         search(:id => param).first
       end
     end
 
     def self.search(param)
-      if param.instance_of? Hash 
-        Search.by_attributes param
-      else
-        Search.by_query param
-      end.map do |attributes|
-        self.new attributes
+      Searcher.search(param).map do |attributes|
+        new attributes
       end
     end
 
