@@ -6,11 +6,17 @@
       <li class="active"><%= link_to 'Show', document_path %></li>
     </ul>
     <div class="clear"></div>
-  </div>          
+  </div>
   <div class="content">
     <div class="inner">
-            <%= link_to "#{image_tag("web-app-theme/application_edit.png", :alt => "Edit")} Edit", edit_document_path(@document), :class => "button" %> 
-      <%= link_to "#{image_tag("web-app-theme/cross.png", :alt => "Edit")} Delete", document_path(@document), :method => "delete", :class => "button", :confirm => "Are you sure?" %> 
+      <% @document.attributes.each do |name, value| %>
+        <p>
+          <span><b><%= name %>:</b></span>
+          <span><%= value %></span>
+        </p>
+      <% end %>
+      <%= link_to "#{image_tag("web-app-theme/application_edit.png", :alt => "Edit")} Edit", edit_document_path(@document), :class => "button" %>
+      <%= link_to "#{image_tag("web-app-theme/cross.png", :alt => "Edit")} Delete", document_path(@document), :method => "delete", :class => "button", :confirm => "Are you sure?" %>
       <div class="clear"></div>
     </div>
   </div>
