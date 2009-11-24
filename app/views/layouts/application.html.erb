@@ -3,7 +3,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Lunr</title>
-	<%= stylesheet_link_tag "web_app_theme", "web_app_theme_override", "themes/drastic-dark/style", :cache => true %>
+	<%= javascript_include_merged :base %>
+  <%= stylesheet_link_merged :base %>
 </head>
 <body>
   <div id="container">
@@ -16,12 +17,12 @@
           <li><a href="/logout" class="logout">Logout</a></li>
         </ul>
         <div class="clear"></div>
-      </div>      
+      </div>
       <div id="main-navigation">
         <ul></ul>
         <div class="clear"></div>
       </div>
-    </div>    
+    </div>
     <div id="wrapper">
       <div class="flash">
         <% flash.each do |type, message| -%>
@@ -35,14 +36,14 @@
         <div id="footer">
           <div class="block">
             <p>Copyright &copy; 2009 Your Site.</p>
-          </div>      
+          </div>
         </div>
       </div>
       <div id="sidebar">
         <%= yield :sidebar %>
       </div>
-      <div class="clear"></div>      
-    </div>    
+      <div class="clear"></div>
+    </div>
   </div>
 </body>
 </html>
