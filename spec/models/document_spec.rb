@@ -126,7 +126,6 @@ describe Document do
     
     it "should return an array of inherited model when searching for documents" do
       Advertise.create! :login => "dcrec1"
-      puts Advertise.find(:all).first.class
       Advertise.find(:all).first.should be_a(Advertise)
     end
   end
