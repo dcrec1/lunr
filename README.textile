@@ -1,6 +1,6 @@
 h2. EXAMPLE
 
-<pre><code>jruby -S script/console
+<pre><code>jruby -S script/server
 curl -d "document[name]=Diego&document[lastname]=Carrion&document[lorem]=A little example with a lot of words, including che" -X post http://localhost:3000/documents
 curl -d "document[name]=Ernesto&document[nickname]=che&document[profession]=Revolutionary" -X post http://localhost:3000/documents
 curl http://localhost:3000/documents/search?q=example
