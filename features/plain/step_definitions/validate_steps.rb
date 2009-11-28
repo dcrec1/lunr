@@ -13,7 +13,7 @@ end
 
 Then /^I should get a JSON object for this documents:$/ do |table|
   ActiveSupport::JSON.decode(response.body).each_with_index do |attributes, i|
-    attributes.should eql(table.hashes[i])
+    attributes['id'].should eql(table.hashes[i]['id'])
   end
 end
 

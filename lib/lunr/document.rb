@@ -10,10 +10,6 @@ module Lunr
       @id = @attributes.delete('id') || object_id.to_s
     end
 
-    def as_json(options = nil)
-      @attributes.merge :id => @id
-    end
-
     def save
       document = org.apache.lucene.document.Document.new
       _all = []
