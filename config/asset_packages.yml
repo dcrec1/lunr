@@ -1,9 +1,11 @@
---- 
-javascripts: 
-- base: 
+---
+javascripts:
+- base:
   - jquery-ui
   - jrails
   - jquery
-stylesheets: 
-- base: []
-
+stylesheets:
+- base:
+  - web_app_theme
+  - web_app_theme_override
+  - themes/drastic-dark/style

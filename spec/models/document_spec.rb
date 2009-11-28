@@ -102,31 +102,45 @@ describe Document do
       id = Document.create!(:framework => framework).id
       Document.find(id).framework.should eql(framework)
     end
-    
+
     it "should find with wildcards" do
       Document.create! :food => "Pizza"
       Document.search("pi*a").should_not be_empty
     end
-    
+
     it "should find with OR operator" do
       Document.create! :title => "blue red"
       Document.search("black OR red").should_not be_empty
     end
-    
+
     it "should find given more than an attribute" do
       Document.create! :name => "John", :lastname => "Paul"
       Document.create! :name => "John", :lastname => "Lennon"
       Document.search(:name => "John", :lastname => "Lennon").size.should == 1
     end
-    
+
     it "should return all documents" do
       5.times { Document.create! :year => "2009" }
       Document.find(:all).size.should == 5
     end
-    
+
     it "should return an array of inherited model when searching for documents" do
       Advertise.create! :login => "dcrec1"
       Advertise.find(:all).first.should be_a(Advertise)
+    end
+
+    it "should highlight a term" do
+      Document.create! :description => "the lazy fox over the whatever"
+      Document.search("fox").first.highlight.should eql("the lazy <B>fox</B> over the whatever")
+    end
+
+    it "should return the total of pages of a search" do
+      (Document::PER_PAGE + 1).times { Advertise.create! :label => "pagination" }
+      Document.search("pagination").total_pages.should == 2
+    end
+
+    it "should be converted to a param" do
+      Document.new(:id => "10").to_param.should eql("10")
     end
   end
 end

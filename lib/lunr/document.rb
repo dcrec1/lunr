@@ -1,9 +1,12 @@
 module Lunr
   class Document
-    attr_reader :attributes, :id
+    PER_PAGE = 20
+
+    attr_reader :attributes, :id, :highlight
 
     def initialize(attributes = {})
       @attributes = attributes.stringify_keys
+      @highlight = @attributes.delete('highlight')
       @id = @attributes.delete('id') || object_id.to_s
     end
 
@@ -12,28 +15,28 @@ module Lunr
     end
 
     def save
-      Writer.new do |index|
-        document = org.apache.lucene.document.Document.new
-        _all = []
-        @attributes.each do |key, value|
-          document.add Field.new key, value, Field::Store::YES, Field::Index::ANALYZED
-          _all << value
-        end
-        document.add Field.new ID, @id, Field::Store::YES, Field::Index::NOT_ANALYZED
-        document.add Field.new ALL, _all.join(' '), Field::Store::NO, Field::Index::ANALYZED
-        index.add_document document
+      document = org.apache.lucene.document.Document.new
+      _all = []
+      @attributes.each do |key, value|
+        document.add Field.new key, value, Field::Store::YES, Field::Index::ANALYZED
+        _all << value
       end
+      document.add Field.new ID, @id, Field::Store::YES, Field::Index::NOT_ANALYZED
+      document.add Field.new ALL, _all.join(' '), Field::Store::NO, Field::Index::ANALYZED
+      Writer.write document
     end
 
     def destroy
-      Writer.new do |index|
-        index.delete_documents Lunr::Term.for(ID, @id)
-      end
+      Writer.delete @id
     end
 
     def update_attributes(new_attributes)
       destroy
       self.class.create!(attributes.merge new_attributes)
+    end
+
+    def to_param
+      @id
     end
 
     def self.create!(attributes)
@@ -44,20 +47,21 @@ module Lunr
 
     def self.find(param)
       if param.instance_of? Symbol
-        Search.all.map { |attributes| self.new attributes }
+        search :all
       else
         search(:id => param).first
       end
     end
 
     def self.search(param)
-      if param.instance_of? Hash 
-        Search.by_attributes param
-      else
-        Search.by_query param
-      end.map do |attributes|
-        self.new attributes
-      end
+      search = Searcher.search(param)
+      results = search.attributes.map { |attributes| new attributes }
+      results.instance_eval "def total_pages; #{search.total_pages}; end;"
+      results
+    end
+
+    def self.columns
+      []
     end
 
     private

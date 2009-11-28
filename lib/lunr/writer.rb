@@ -8,5 +8,17 @@ module Lunr
       yield self
       close
     end
+
+    def self.write(document)
+      new do |index|
+        index.add_document document
+      end
+    end
+
+    def self.delete(id)
+      new do |index|
+        index.delete_documents Lunr::Term.for(ID, id)
+      end
+    end
   end
 end
