@@ -142,5 +142,9 @@ describe Document do
     it "should be converted to a param" do
       Document.new(:id => "10").to_param.should eql("10")
     end
+
+    it "should not loose id on update" do
+      Document.create!(:id => "9").update_attributes!(:company => "MouseOver Studio").id.should eql("9")
+    end
   end
 end

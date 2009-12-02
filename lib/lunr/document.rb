@@ -28,8 +28,9 @@ module Lunr
 
     def update_attributes(new_attributes)
       destroy
-      self.class.create!(attributes.merge new_attributes)
+      self.class.create! attributes.merge(new_attributes.merge(:id => @id))
     end
+    alias :update_attributes! :update_attributes
 
     def to_param
       @id
