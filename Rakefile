@@ -10,23 +10,9 @@ require 'rake/rdoctask'
 require 'tasks/rails'
 
 namespace :stories do
-  def execute(cmd)
-    success = system cmd
-    yield
-    raise unless success
+  task :all do
+    system "jruby -S cucumber"
   end
-
-  task :default do
-    execute "cucumber RAILS_ENV=cucumber"
-  end
-
-  task :enhanced => [:'culerity:rails:start'] do
-    execute "cucumber -p enhanced RAILS_ENV=culerity_continuousintegration" do
-      execute "rake culerity:rails:stop"
-    end
-  end
-
-  task :all => [:default, :enhanced]
 end
 
 task :build => [:'db:migrate', :spec, :'stories:all', :'metrics:all']
