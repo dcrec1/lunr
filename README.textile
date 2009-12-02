@@ -1,8 +1,8 @@
 h2. EXAMPLE
 
 <pre><code>jruby -S script/server
-curl -d "document[name]=Diego&document[lastname]=Carrion&document[lorem]=A little example with a lot of words, including che" -X post http://localhost:3000/documents
-curl -d "document[name]=Ernesto&document[nickname]=che&document[profession]=Revolutionary" -X post http://localhost:3000/documents
+curl -X POST -H 'Content-type: application/json' -d "{'document':{'name':'Diego','lastname':'Carrion','lorem':'A little example with a lot of words, including che'}}" http://localhost:3000/documents.json
+curl -X POST -H 'Content-type: application/json' -d "{'document':{'name':'Ernesto','nickname':'che','profession':'Revolutionary'}}" http://localhost:3000/documents.json
 curl http://localhost:3000/documents/search?q=example
 curl http://localhost:3000/documents/search?q=che
 curl http://localhost:3000/documents/search?q=nickname:che
