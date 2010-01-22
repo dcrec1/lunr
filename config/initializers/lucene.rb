@@ -15,6 +15,8 @@ begin
   import org.apache.lucene.search.highlight.QueryScorer
   import org.apache.lucene.search.highlight.Highlighter
 
+  import org.apache.lucene.util.Version
+
   Lunr::Index.init
 rescue Exception => e
   puts e
