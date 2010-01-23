@@ -1,2 +1,2 @@
-class Document < Lunr::Document
+class Document < ActiveLucene::Document
 end
