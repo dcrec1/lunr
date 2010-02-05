@@ -11,6 +11,18 @@ describe DocumentsController do
       Document.stub!(:search).with(@query).and_return(@documents)
     end
     
+    context "with html format" do
+      it "renders the search template" do
+        get :search, :format => 'html', :q => @query
+        response.should render_template("search")
+      end
+      
+      it "assigns the documents founds as @documents" do
+        get :search, :format => 'html', :q => @query
+        assigns[:documents].should eql(@documents)
+      end
+    end
+    
     context "with json format" do
       it "should return found documents" do
         get :search, :format => 'json', :q => @query

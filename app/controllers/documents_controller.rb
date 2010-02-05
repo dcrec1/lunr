@@ -2,6 +2,10 @@ class DocumentsController < InheritedResources::Base
   respond_to :json, :xml
 
   def search
-    render :text => Search.new(Document.search(params[:q])).to_json
+    @documents = Document.search(params[:q])
+    respond_to do |format|
+      format.html
+      format.json { render :json => Search.new(@documents) }
+    end
   end
 end
