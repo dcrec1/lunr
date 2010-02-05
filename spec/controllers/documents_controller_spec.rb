@@ -14,13 +14,13 @@ describe DocumentsController do
     context "with json format" do
       it "should return found documents" do
         get :search, :format => 'json', :q => @query
-        ActiveSupport::JSON.decode(response.body)['documents'].to_json.should eql(@documents.to_json)
+        Crack::JSON.parse(response.body)['documents'].to_json.should eql(@documents.to_json)
       end
 
       it "should render a suggestion" do
         get :search, :format => 'json', :q => @query
-        ActiveSupport::JSON.decode(response.body)['suggest'].should eql(@suggest)
+        Crack::JSON.parse(response.body)['suggest'].should eql(@suggest)
       end
     end
-   end
+  end
 end
