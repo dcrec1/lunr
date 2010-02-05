@@ -12,7 +12,7 @@ Then /^I should get a JSON object with '(.*)' equal to '(.*)'$/ do |attribute, v
 end
 
 Then /^I should get a JSON object for this documents:$/ do |table|
-  ActiveSupport::JSON.decode(response.body).each_with_index do |attributes, i|
+  ActiveSupport::JSON.decode(response.body)['documents'].each_with_index do |attributes, i|
     attributes['id'].should eql(table.hashes[i]['id'])
   end
 end

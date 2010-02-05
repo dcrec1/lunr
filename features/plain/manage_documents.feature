@@ -38,3 +38,13 @@ Feature: Manage documents
     | 8  |
     | 16 |
     | 32 |
+    
+    Scenario: Suggest documents
+      Given I have this documents:
+      | id |       title      |
+      | 2  | Ruby programming |
+      | 4  | The Ruby way     |
+      | 8  | Ruby refactoring |
+      | 16 | The Rails way    |
+      When I go to /documents/search.json?q=rubi+programing
+      Then I should get a JSON object with 'suggest' equal to 'ruby programming'
