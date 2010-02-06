@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe DocumentsController do
-  should_behave_like_resource :formats => [:html, :json, :xml]
+  should_behave_like_resource :formats => [:html, :json, :xml], :paginate => true
 
   context "responding to GET search" do
     before :each do
