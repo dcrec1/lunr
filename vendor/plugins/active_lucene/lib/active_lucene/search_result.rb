@@ -3,7 +3,7 @@ module ActiveLucene
     include Dictionary
     
     attr_reader :query
-    attr_accessor :total_pages
+    attr_accessor :total_pages, :current_page
     
     def initialize(query)
       @query = query
@@ -19,6 +19,14 @@ module ActiveLucene
       query.split(' ').map do |word|
         spell_checker.suggest_similar(word, 1).first || word
       end.join(' ')
+    end
+    
+    def previous_page
+      @current_page - 1
+    end
+    
+    def next_page
+      @current_page + 1
     end
   end
 end

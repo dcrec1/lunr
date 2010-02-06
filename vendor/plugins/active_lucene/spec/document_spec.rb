@@ -150,5 +150,45 @@ describe Advertise do
       Advertise.create!(:title => "ruby for dummies")
       Advertise.search("rubi for dumies").suggest.should eql("ruby for dummies")
     end
+    
+    it "should returns the current page as current_page" do
+      (Advertise::PER_PAGE + 1).times { Advertise.create! :label => "pagination" }
+      Advertise.search("pagination", :page => 2).current_page.should == 2
+    end
+    
+    it "should be created without params" do
+      Advertise.create!
+      Advertise.find(:all).size.should == 1
+    end
+    
+    it "should find all documents on all" do
+      20.times { Advertise.create! }
+      Advertise.all.size.should == 20
+    end
+    
+    it "should return the page 1 as default" do
+      Advertise.create!
+      Advertise.all.current_page.should == 1
+    end
+    
+    it "should return the documents for the current page" do
+      (Advertise::PER_PAGE + 1).times { |i| Advertise.create! :title => "advertise #{i}" }
+      Advertise.search("advertise", :page => 2).first.title.should eql("advertise #{Advertise::PER_PAGE}")
+    end
+    
+    it "should accept the page as a string" do
+      Advertise.create!
+      Advertise.search("empty", :page => '2').should be_empty
+    end
+    
+    it "should return the previous page of the current one" do
+      Advertise.create!
+      Advertise.search("whatever", :page => 5).previous_page.should == 4
+    end
+    
+    it "should return the next page of the current one" do
+      Advertise.create!
+      Advertise.search("whatever", :page => 5).next_page.should == 6
+    end
   end
 end
