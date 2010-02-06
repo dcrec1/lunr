@@ -1,9 +1,9 @@
 ---
 javascripts:
 - base:
+  - jquery
   - jquery-ui
   - jrails
-  - jquery
 stylesheets:
 - base:
   - web_app_theme
