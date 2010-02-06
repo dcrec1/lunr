@@ -8,7 +8,17 @@ describe DocumentsController do
       @query = "blue"
       @documents = [Document.new]
       @documents.stub!(:suggest).and_return(@suggest = "ruby for dummies")
-      Document.stub!(:search).with(@query).and_return(@documents)
+      Document.stub!(:search).and_return(@documents)
+    end
+    
+    it "should search documents by the parameter q" do
+      Document.should_receive(:search).with(@query, anything).and_return(@documents)
+      get :search, :format => 'html', :q => @query
+    end
+    
+    it "should paginate documents by the parameter page" do
+      Document.should_receive(:search).with(anything, :page => '5').and_return(@documents)
+      get :search, :format => 'html', :q => @query, :page => '5'
     end
     
     context "with html format" do
