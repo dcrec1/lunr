@@ -2,6 +2,23 @@ require 'spec_helper'
 
 describe DocumentsController do
   should_behave_like_resource :formats => [:html, :json, :xml], :paginate => true
+  
+  context "responding to POST create" do
+    context "with content type text/html" do
+      it "should extract the inner text of the html data and create a document with attributes head and body" do
+        html = <<HTML
+          <html>
+            <head><title>HTML Title</title></head>
+            <body>This is the body!</body>
+          </html>
+HTML
+        Document.should_receive(:new).with('head' => "HTML Title", 'body' => "This is the body!").and_return(mock(Document, :save => true))
+        request.stub!(:content_type).and_return(Mime::HTML)
+        request.stub!(:raw_post).and_return(html)
+        post :create, {}
+      end
+    end
+  end
 
   context "responding to GET search" do
     before :each do

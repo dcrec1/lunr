@@ -6,6 +6,7 @@ Rails::Initializer.run do |config|
   config.gem 'less'
   config.gem 'haml'
   config.gem 'crack'
+  config.gem 'nokogiri'
   config.frameworks -= [ :active_record, :active_resource, :action_mailer ]
   config.time_zone = 'UTC'
 end
