@@ -20,9 +20,13 @@ class DocumentsController < InheritedResources::Base
   def extract_html
     if request.content_type.eql? Mime::HTML
       document = Nokogiri::HTML(html_or_io)
-      params[:document] = { :head => document.search("head").first.inner_text, 
-                            :body => document.search("body").first.inner_text }
+      params[:document] = { :head => element("head", :from => document), 
+                            :body => element("body", :from => document) }
     end
+  end
+  
+  def element(name, opts)
+    opts[:from].search(name).first.inner_text
   end
   
   def html_or_io
