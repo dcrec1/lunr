@@ -17,3 +17,20 @@ Spec::Runner.configure do |config|
 end
 
 require File.expand_path(File.dirname(__FILE__) + '/resource_helper')
+
+require 'fakeweb'
+
+def html
+  <<HTML
+    <html>
+      <head><title>HTML Title</title></head>
+      <body>This is the body!</body>
+    </html>
+HTML
+end
+
+def url
+  "http://test.com"
+end
+
+FakeWeb.register_uri(:get, url, :body => html)

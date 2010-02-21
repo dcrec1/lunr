@@ -5,17 +5,19 @@ describe DocumentsController do
   
   context "responding to POST create" do
     context "with content type text/html" do
-      it "should extract the inner text of the html data and create a document with attributes head and body" do
-        html = <<HTML
-          <html>
-            <head><title>HTML Title</title></head>
-            <body>This is the body!</body>
-          </html>
-HTML
+      before :each do
         Document.should_receive(:new).with('head' => "HTML Title", 'body' => "This is the body!").and_return(mock(Document, :save => true))
         request.stub!(:content_type).and_return(Mime::HTML)
+      end
+      
+      it "should extract the inner text of the html data and create a document with attributes head and body" do
         request.stub!(:raw_post).and_return(html)
-        post :create, {}
+        post :create
+      end
+      
+      it "should extract the inner text of the url specified as the data and create a document with attributes head and body" do
+        request.stub!(:raw_post).and_return(url)
+        post :create
       end
     end
   end

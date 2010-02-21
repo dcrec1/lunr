@@ -19,9 +19,13 @@ class DocumentsController < InheritedResources::Base
   
   def extract_html
     if request.content_type.eql? Mime::HTML
-      document = Nokogiri::HTML(request.raw_post)
+      document = Nokogiri::HTML(html_or_io)
       params[:document] = { :head => document.search("head").first.inner_text, 
                             :body => document.search("body").first.inner_text }
     end
+  end
+  
+  def html_or_io
+    request.raw_post.lstrip.start_with?("<") ? request.raw_post : Net::HTTP.get(URI.parse(request.raw_post))
   end
 end
