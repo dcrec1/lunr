@@ -1,9 +1,16 @@
 h2. EXAMPLE
 
 <pre><code>jruby -S script/server
+  
+JSON
+
 curl -X POST -H 'Content-type: application/json' -d "{'document':{'name':'Diego','lastname':'Carrion','lorem':'A little example with a lot of words, including che'}}" http://localhost:3000/documents.json
-curl -X POST -H 'Content-type: application/json' -d "{'document':{'name':'Ernesto','nickname':'che','profession':'Revolutionary'}}" http://localhost:3000/documents.json
-curl http://localhost:3000/documents/search?q=example
-curl http://localhost:3000/documents/search?q=che
-curl http://localhost:3000/documents/search?q=nickname:che
+
+HTML
+
+curl -X POST -H 'Content-type: text/html' -d "<html><head><title>my new blog</title></head><body><a>hellow world</a></body><html>" http://localhost:3000/documents.json
+
+curl -X POST -H 'Content-type: text/html' -d "http://www.diegocarrion.com" http://localhost:3000/documents.json
+
+curl http://localhost:3000/documents/search?q={query}
 </code></pre>
