@@ -1,5 +1,5 @@
 class File
   def self.parse(file)
-    Html.new file.read
+    File.extname(file.path).gsub('.', '').classify.constantize.new file
   end
 end

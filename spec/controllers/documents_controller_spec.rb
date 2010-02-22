@@ -3,21 +3,30 @@ require 'spec_helper'
 describe DocumentsController do
   should_behave_like_resource :formats => [:html, :json, :xml], :paginate => true
 
+  before :each do
+    @mocked_document = mock(Document, :save => true)
+  end
+
   context "responding to POST create" do
     context "with multipart data" do
       before :each do
         request.stub!(:content_type).and_return(Mime::MULTIPART_FORM)
       end
 
+      it "should extract the text of the pdf file attribute and create a document with attribute content" do
+        Document.should_receive(:new).with('content' => "Hello from pdf!\n\n\f").and_return(@mocked_document)
+        post :create, :file => File.open(File.join(File.dirname(__FILE__),'..','data','index.pdf'))
+      end
+
       it "should extract the text of the html file attribute and create a document with attributes head and body, ignoring the script tags" do
-        Document.should_receive(:new).with('head' => "HTML Title", 'body' => "This is the body!").and_return(mock(Document, :save => true))
+        Document.should_receive(:new).with('head' => "HTML Title", 'body' => "This is the body!").and_return(@mocked_document)
         post :create, :file => File.open(File.join(File.dirname(__FILE__),'..','data','index.html'))
       end
     end
 
     context "with content type text/html should" do
       before :each do
-        Document.should_receive(:new).with('head' => "HTML Title", 'body' => "This is the body!").and_return(mock(Document, :save => true))
+        Document.should_receive(:new).with('head' => "HTML Title", 'body' => "This is the body!").and_return(@mocked_document)
         request.stub!(:content_type).and_return(Mime::HTML)
       end
 
