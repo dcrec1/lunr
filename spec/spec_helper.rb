@@ -24,8 +24,7 @@ def html
   <<HTML
     <html>
       <head><title>HTML Title</title></head>
-      <body>This is the body!<script>function hello() {};</script>
-      </body>
+      <body>This is the body!<script>function hello() {};</script></body>
     </html>
 HTML
 end

@@ -2,19 +2,30 @@ require 'spec_helper'
 
 describe DocumentsController do
   should_behave_like_resource :formats => [:html, :json, :xml], :paginate => true
-  
+
   context "responding to POST create" do
+    context "with multipart data" do
+      before :each do
+        request.stub!(:content_type).and_return(Mime::MULTIPART_FORM)
+      end
+
+      it "should extract the text of the html file attribute and create a document with attributes head and body, ignoring the script tags" do
+        Document.should_receive(:new).with('head' => "HTML Title", 'body' => "This is the body!").and_return(mock(Document, :save => true))
+        post :create, :file => File.open(File.join(File.dirname(__FILE__),'..','data','index.html'))
+      end
+    end
+
     context "with content type text/html should" do
       before :each do
         Document.should_receive(:new).with('head' => "HTML Title", 'body' => "This is the body!").and_return(mock(Document, :save => true))
         request.stub!(:content_type).and_return(Mime::HTML)
       end
-      
+
       it "should extract the text of the html data and create a document with attributes head and body, ignoring the script tags" do
         request.stub!(:raw_post).and_return(html)
         post :create
       end
-      
+
       it "should extract the text of the url specified as the data and create a document with attributes head and body" do
         request.stub!(:raw_post).and_return(url)
         post :create
@@ -29,29 +40,29 @@ describe DocumentsController do
       @documents.stub!(:suggest).and_return(@suggest = "ruby for dummies")
       Document.stub!(:search).and_return(@documents)
     end
-    
+
     it "should search documents by the parameter q" do
       Document.should_receive(:search).with(@query, anything).and_return(@documents)
       get :search, :format => 'html', :q => @query
     end
-    
+
     it "should paginate documents by the parameter page" do
       Document.should_receive(:search).with(anything, :page => '5').and_return(@documents)
       get :search, :format => 'html', :q => @query, :page => '5'
     end
-    
+
     context "with html format" do
       it "renders the search template" do
         get :search, :format => 'html', :q => @query
         response.should render_template("search")
       end
-      
+
       it "assigns the documents founds as @documents" do
         get :search, :format => 'html', :q => @query
         assigns[:documents].should eql(@documents)
       end
     end
-    
+
     context "with json format" do
       it "should return found documents" do
         get :search, :format => 'json', :q => @query
