@@ -12,6 +12,8 @@ curl -X POST -H 'Content-type: text/html' -d "<html><head><title>my new blog</ti
 
 curl -X POST -H 'Content-type: text/html' -d "http://www.diegocarrion.com" http://localhost:3000/documents.json
 
+PDF
+
 curl -X POST -F file=@/path/to/my/file.html http://localhost:3000/documents.json
 
 curl http://localhost:3000/documents/search?q={query}
