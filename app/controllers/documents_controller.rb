@@ -25,10 +25,10 @@ class DocumentsController < InheritedResources::Base
   end
   
   def expire_document_cache
-    expire_page :action => :show, :format => params[:format]
+    expire_page :action => :show, :id => params[:id], :format => params[:format]
   end
   
   def expire_search_cache
-    expire_page :action => :search, :format => params[:format]
+    system "rm -Rf #{page_cache_directory}/search/*"
   end
 end
