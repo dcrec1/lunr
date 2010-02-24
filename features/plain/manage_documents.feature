@@ -18,7 +18,7 @@ Feature: Manage documents
     | 4  | The Ruby way     |
     | 8  | Ruby refactoring |
     | 16 | The Rails way    |
-    When I go to /documents/search.json?q=ruby
+    When I go to /search/ruby.json
     Then I should get a JSON object for this documents:
     | id |       title      |
     | 2  | Ruby programming |
@@ -46,5 +46,5 @@ Feature: Manage documents
       | 4  | The Ruby way     |
       | 8  | Ruby refactoring |
       | 16 | The Rails way    |
-      When I go to /documents/search.json?q=rubi+programing
+      When I go to /search/rubi%20programing.json
       Then I should get a JSON object with 'suggest' equal to 'ruby programming'

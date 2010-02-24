@@ -16,5 +16,5 @@ PDF
 
 curl -X POST -F file=@/path/to/my/file.html http://localhost:3000/documents.json
 
-curl http://localhost:3000/documents/search?q={query}
+curl http://localhost:3000/search/my%20query.json
 </code></pre>
