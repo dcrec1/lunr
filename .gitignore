@@ -11,3 +11,5 @@ public/stylesheets
 public/javascripts/*_packaged.js
 doc/specs.html
 doc/features.html
+public/documents
+public/search
