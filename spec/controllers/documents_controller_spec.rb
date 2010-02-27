@@ -1,4 +1,4 @@
-require 'spec_helper'
+require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 
 describe DocumentsController do
   should_behave_like_resource :formats => [:html, :json, :xml], :paginate => true

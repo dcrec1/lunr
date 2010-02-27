@@ -18,3 +18,7 @@ namespace :stories do
 end
 
 task :build => [:'db:migrate', :spec, :'stories:all', :'metrics:all']
+
+MetricFu::Configuration.run do |config|
+  config.metrics  = [:churn, :saikuro, :stats, :flog, :flay, :reek, :roodi]
+end
