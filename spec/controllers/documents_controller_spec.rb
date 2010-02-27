@@ -18,27 +18,20 @@ describe DocumentsController do
         post :create, :file => File.open(File.join(File.dirname(__FILE__),'..','data','index.pdf'))
       end
 
-      it "should extract the text of the html file attribute and create a document with attributes head and body, ignoring the script tags" do
+      it "should extract the text of the html attribute and create a document with attributes head and body, ignoring the script tags" do
         Document.should_receive(:new).with('head' => "HTML Title", 'body' => "This is the body!").and_return(@mocked_document)
         post :create, :file => File.open(File.join(File.dirname(__FILE__),'..','data','index.html'))
       end
     end
 
-    context "with content type text/html should" do
-      before :each do
-        Document.should_receive(:new).with('head' => "HTML Title", 'body' => "This is the body!").and_return(@mocked_document)
-        request.stub!(:content_type).and_return(Mime::HTML)
-      end
+    it "should extract the text of the html attribute and create a document with attributes head and body, ignoring the script tags" do
+      Document.should_receive(:new).with('head' => "HTML Title", 'body' => "This is the body!").and_return(@mocked_document)
+      post :create, :document => { :html => html }
+    end
 
-      it "should extract the text of the html data and create a document with attributes head and body, ignoring the script tags" do
-        request.stub!(:raw_post).and_return(html)
-        post :create
-      end
-
-      it "should extract the text of the url specified as the data and create a document with attributes head and body" do
-        request.stub!(:raw_post).and_return(url)
-        post :create
-      end
+    it "should extract the text of the url attribute and create a document with attributes head and body" do
+      Document.should_receive(:new).with('head' => "HTML Title", 'body' => "This is the body!").and_return(@mocked_document)
+      post :create, :document => { :url => url }
     end
   end
 
