@@ -9,6 +9,8 @@ require 'rake/rdoctask'
 
 require 'tasks/rails'
 
+require 'metric_fu'
+
 namespace :stories do
   task :all do
     system "jruby -S cucumber"
