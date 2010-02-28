@@ -21,7 +21,7 @@ class DocumentsController < InheritedResources::Base
 
   def extract_html
     params[:document] = File.parse(params[:file]).to_hash if request.content_type.eql? Mime::MULTIPART_FORM
-    params[:document] = Html.parse(html_or_url).to_hash unless html_or_url.nil?
+    params[:document].merge!(Html.parse(html_or_url).to_hash) unless html_or_url.nil?
   end
   
   def html_or_url

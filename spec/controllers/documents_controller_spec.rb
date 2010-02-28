@@ -25,13 +25,13 @@ describe DocumentsController do
     end
 
     it "should extract the text of the html attribute and create a document with attributes head and body, ignoring the script tags" do
-      Document.should_receive(:new).with('head' => "HTML Title", 'body' => "This is the body!").and_return(@mocked_document)
-      post :create, :document => { :html => html }
+      Document.should_receive(:new).with('html' => html, 'head' => "HTML Title", 'body' => "This is the body!", 'title' => "This page rocks!").and_return(@mocked_document)
+      post :create, :document => { :html => html, :title => "This page rocks!" }
     end
 
     it "should extract the text of the url attribute and create a document with attributes head and body" do
-      Document.should_receive(:new).with('head' => "HTML Title", 'body' => "This is the body!").and_return(@mocked_document)
-      post :create, :document => { :url => url }
+      Document.should_receive(:new).with('url' => url, 'head' => "HTML Title", 'body' => "This is the body!", 'name' => "My blog :)").and_return(@mocked_document)
+      post :create, :document => { :url => url, :name => "My blog :)" }
     end
   end
 

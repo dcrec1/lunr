@@ -8,9 +8,9 @@ curl -X POST -H 'Content-type: application/json' -d "{'document':{'name':'Diego'
 
 HTML
 
-curl -X POST -d "document[html]=<html><head><title>my new blog</title></head><body><a>hellow world</a></body><html>" http://localhost:3000/documents.json
+curl -X POST -d "document[html]=<html><head><title>my new blog</title></head><body><a>hellow world</a></body><html>&document[name]=My personal page" http://localhost:3000/documents.json
 
-curl -X POST -d "document[url]=http://www.diegocarrion.com" http://localhost:3000/documents.json
+curl -X POST -d "document[url]=http://www.diegocarrion.com&document[title]=My blog" http://localhost:3000/documents.json
 
 PDF
 
