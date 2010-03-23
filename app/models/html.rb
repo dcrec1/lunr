@@ -11,7 +11,7 @@ class Html
   
   def initialize(text_or_io)
     @document = Nokogiri::HTML(text_or_io)
-    @document.search("script").unlink
+    @document.search("script,style").unlink
   end
   
   def content_from(name)
